@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>SocialMedia — Feed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">Pulse</a>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-item active"><span class="icon">🏠</span> <span>Home</span></a>
+        <a href="#" class="nav-item" id="nav-search"><span class="icon">🔍</span> <span>Search</span></a>
+        <a href="messages.html" class="nav-item" id="nav-messages"><span class="icon">💬</span> <span>Messages</span></a>
+        <a href="#" class="nav-item" id="nav-notifications"><span class="icon">🔔</span> <span>Notifications</span></a>
+        <a href="#" class="nav-item" id="nav-bookmarks"><span class="icon">🔖</span> <span>Bookmarks</span></a>
+        <a href="#" class="nav-item" id="nav-profile"><span class="icon">👤</span> <span>Profile</span></a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" title="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <button id="profile-pic-btn" class="profile-pic-btn" aria-haspopup="dialog" aria-expanded="false" aria-label="Open profile menu" title="Profile menu">
+          <img id="header-avatar" class="avatar" src="https://www.gravatar.com/avatar/?d=identicon&s=80" alt="Profile photo">
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="profile-modal-overlay" class="modal-overlay"></div>
+  <dialog id="profile-modal" class="profile-modal" aria-labelledby="profile-modal-title">
+    <div class="modal-content">
+      <button id="btn-close-profile-modal" class="btn-close" aria-label="Close">×</button>
+      <h2 id="profile-modal-title">Your profile</h2>
+      <div id="profile-summary-content"></div>
+      <hr class="divider">
+      <div class="modal-actions">
+        <button id="btn-create-post-modal" class="btn-link" type="button"><span class="icon">✏️</span> Create post</button>
+        <button id="btn-edit-profile-modal" class="btn-link" type="button"><span class="icon">👤</span> Edit profile</button>
+        <button id="btn-my-posts-modal" class="btn-link" type="button"><span class="icon">📷</span> My posts</button>
+        <button id="btn-bookmarks-modal" class="btn-link" type="button"><span class="icon">🔖</span> Bookmarks</button>
+        <button id="btn-notifications-modal" class="btn-link" type="button"><span class="icon">🔔</span> Notifications</button>
+        <button id="btn-theme-modal" class="btn-link" type="button"><span class="icon">🌗</span> Toggle theme</button>
+        <button id="btn-signout-modal" class="btn-link" type="button" style="color:var(--danger)"><span class="icon">🚪</span> Sign out</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="create-post-modal" class="posts-modal" aria-labelledby="create-post-title">
+    <div class="modal-content">
+      <button id="btn-close-create-post" class="btn-close" aria-label="Close">×</button>
+      <h2 id="create-post-title">Create post</h2>
+      <div id="create-post-user" style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+        <img id="create-post-avatar" class="avatar" style="width:40px;height:40px" src="" alt="">
+        <strong id="create-post-username"></strong>
+      </div>
+      <form id="form-post-modal" enctype="multipart/form-data">
+        <div class="form-group">
+          <textarea id="post-body-modal" name="body" rows="4" required aria-required="true" placeholder="What's on your mind?"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="post-image-modal">Image or video (optional)</label>
+          <input id="post-image-modal" name="media" type="file" accept="image/*,video/*">
+        </div>
+        <div class="form-row">
+          <button type="submit" class="btn-primary" id="btn-submit-post">Post</button>
+          <div id="post-feedback-modal" class="feedback" role="status" aria-live="polite"></div>
+        </div>
+      </form>
+    </div>
+  </dialog>
+
+  <dialog id="edit-profile-modal" class="profile-modal" aria-labelledby="edit-profile-title">
+    <div class="modal-content">
+      <button id="btn-close-edit-profile" class="btn-close" aria-label="Close">×</button>
+      <h2 id="edit-profile-title">Edit profile</h2>
+      <div class="edit-profile-tabs">
+        <button class="edit-profile-tab active" data-tab="profile">Profile</button>
+        <button class="edit-profile-tab" data-tab="password">Password</button>
+      </div>
+      <div class="tabs-pane active" data-pane="profile">
+        <form id="form-edit-profile">
+          <img id="edit-avatar-preview" class="profile-avatar-preview" src="" alt="Profile picture">
+          <div class="form-group">
+            <label for="edit-username">Username</label>
+            <input id="edit-username" type="text" name="username" disabled>
+          </div>
+          <div class="form-group">
+            <label for="edit-email">Email</label>
+            <input id="edit-email" type="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="edit-bio">Bio</label>
+            <textarea id="edit-bio" name="bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="edit-location">Location</label>
+            <input id="edit-location" type="text" name="location" placeholder="City, country">
+          </div>
+          <div class="form-group">
+            <label for="edit-website">Website</label>
+            <input id="edit-website" type="url" name="website" placeholder="https://example.com">
+          </div>
+          <div class="form-group">
+            <label for="edit-phone">Phone number</label>
+            <input id="edit-phone" type="tel" name="phone_number" placeholder="+1 555 000 0000">
+          </div>
+          <div class="form-group">
+            <label for="edit-profile-pic">Profile picture</label>
+            <input id="edit-profile-pic" type="file" name="image" accept="image/*">
+          </div>
+          <div class="form-row">
+            <button type="submit" class="btn-primary">Save changes</button>
+            <div id="edit-profile-feedback" class="feedback" role="status" aria-live="polite"></div>
+          </div>
+        </form>
+      </div>
+      <div class="tabs-pane" data-pane="password">
+        <form id="form-change-password">
+          <div class="form-group">
+            <label for="current-password">Current password</label>
+            <input id="current-password" type="password" required autocomplete="current-password">
+          </div>
+          <div class="form-group">
+            <label for="new-password">New password (min 8 chars)</label>
+            <input id="new-password" type="password" required minlength="8" autocomplete="new-password">
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirm new password</label>
+            <input id="confirm-password" type="password" required minlength="8" autocomplete="new-password">
+          </div>
+          <div class="form-row">
+            <button type="submit" class="btn-primary">Update password</button>
+            <div id="password-feedback" class="feedback" role="status" aria-live="polite"></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="my-posts-modal" class="posts-modal" aria-labelledby="my-posts-title">
+    <div class="modal-content">
+      <button id="btn-close-my-posts" class="btn-close" aria-label="Close">×</button>
+      <h2 id="my-posts-title">My posts</h2>
+      <div id="my-posts-list" aria-live="polite"></div>
+    </div>
+  </dialog>
+
+  <dialog id="bookmarks-modal" class="posts-modal" aria-labelledby="bookmarks-title">
+    <div class="modal-content">
+      <button id="btn-close-bookmarks" class="btn-close" aria-label="Close">×</button>
+      <h2 id="bookmarks-title">Bookmarks</h2>
+      <div id="bookmarks-list" aria-live="polite"></div>
+    </div>
+  </dialog>
+
+  <dialog id="notifications-modal" class="posts-modal" aria-labelledby="notifications-title">
+    <div class="modal-content">
+      <button id="btn-close-notifications" class="btn-close" aria-label="Close">×</button>
+      <h2 id="notifications-title">Notifications</h2>
+      <div id="notifications-list" aria-live="polite"></div>
+    </div>
+  </dialog>
+
+  <main class="main-layout">
+    <section class="feed-section" aria-labelledby="feed-title">
+      <div id="stories-bar" class="stories-bar"></div>
+      <h2 id="feed-title" class="visually-hidden">Feed</h2>
+
+      <div class="create-post-card">
+        <div class="create-post-row" id="create-post-trigger">
+          <img id="feed-avatar" class="avatar" src="https://www.gravatar.com/avatar/?d=identicon&s=80" alt="">
+          <button class="create-post-prompt" type="button">What's on your mind?</button>
+        </div>
+        <div class="create-post-actions">
+          <button class="create-post-action" data-media="image"><span class="icon">📷</span> Photo</button>
+          <button class="create-post-action" data-media="video"><span class="icon">🎬</span> Video</button>
+          <button class="create-post-action" id="create-post-feel"><span class="icon">😊</span> Feeling</button>
+        </div>
+      </div>
+
+      <div id="posts" aria-live="polite"></div>
+      <div id="suggestions-bar" class="suggestions-bar"></div>
+      <div class="center">
+        <button id="btn-load-more" class="btn-link">Load more</button>
+      </div>
+    </section>
+
+    <aside class="sidebar-right">
+      <div class="widget">
+        <h3>Trending</h3>
+        <div id="trending-list"></div>
+      </div>
+      <div class="widget">
+        <h3>Suggested for you</h3>
+        <div id="suggested-list"></div>
+      </div>
+    </aside>
+  </main>
+
+  <template id="tpl-post">
+    <article class="card post">
+      <header class="post-header">
+        <img class="avatar post-avatar" src="" alt="">
+        <div class="post-author-block">
+          <a href="#" class="post-author"></a>
+          <time class="post-time"></time>
+        </div>
+      </header>
+      <div class="post-body"></div>
+      <div class="post-image-wrap"></div>
+      <div class="post-video-wrap"></div>
+      <div class="reaction-bar"></div>
+      <div class="post-actions">
+        <button class="post-action btn-reaction" aria-haspopup="true"><span class="icon">👍</span> <span class="label">Like</span> <span class="count">0</span></button>
+        <button class="post-action btn-comment-toggle"><span class="icon">💬</span> <span class="label">Comment</span> <span class="count">0</span></button>
+        <button class="post-action btn-bookmark"><span class="icon">🔖</span> <span class="label">Save</span></button>
+        <button class="post-action btn-share"><span class="icon">↗️</span> <span class="label">Share</span></button>
+        <button class="post-action btn-delete" style="display:none"><span class="icon">🗑️</span></button>
+      </div>
+      <div class="post-comments"></div>
+      <form class="form-comment" aria-label="Add comment">
+        <input class="input-comment" name="comment" placeholder="Write a comment…">
+        <button class="btn-small" type="submit">Post</button>
+      </form>
+    </article>
+  </template>
+
+  <template id="tpl-comment">
+    <div class="comment-item">
+      <img class="avatar comment-avatar" src="" alt="">
+      <div style="flex:1;min-width:0">
+        <div class="comment-bubble">
+          <span class="comment-author"></span>
+          <p class="comment-content"></p>
+        </div>
+        <div class="comment-meta">
+          <time class="comment-time"></time>
+          <button class="btn-link btn-comment-like">Like</button>
+          <button class="btn-link btn-comment-reply">Reply</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-story">
+    <div class="story-item" tabindex="0">
+      <div class="story-ring">
+        <img class="story-avatar" src="" alt="">
+      </div>
+      <span class="story-username"></span>
+    </div>
+  </template>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

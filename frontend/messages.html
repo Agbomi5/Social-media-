@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Messages — Pulse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="messages-page-body">
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="brand">Pulse</a>
+      <nav class="main-nav">
+        <a href="index.html" class="nav-item"><span class="icon">🏠</span> <span>Home</span></a>
+        <a href="#" class="nav-item" id="nav-search"><span class="icon">🔍</span> <span>Search</span></a>
+        <a href="messages.html" class="nav-item active"><span class="icon">💬</span> <span>Messages</span></a>
+        <a href="#" class="nav-item" id="nav-notifications"><span class="icon">🔔</span> <span>Notifications</span></a>
+        <a href="#" class="nav-item" id="nav-bookmarks"><span class="icon">🔖</span> <span>Bookmarks</span></a>
+        <a href="#" class="nav-item" id="nav-profile"><span class="icon">👤</span> <span>Profile</span></a>
+      </nav>
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" title="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+        <button id="profile-pic-btn" class="profile-pic-btn" aria-haspopup="dialog" aria-expanded="false" aria-label="Open profile menu" title="Profile menu">
+          <img id="header-avatar" class="avatar" src="https://www.gravatar.com/avatar/?d=identicon&s=80" alt="Profile photo">
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="messages-root"></div>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>

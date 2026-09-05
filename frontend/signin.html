@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign in — Pulse</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <main class="auth">
+    <div class="auth-card">
+      <h1>Welcome back</h1>
+      <p class="subtitle">Sign in to your account</p>
+      <form id="form-signin" aria-describedby="signin-help">
+        <div class="form-group">
+          <label for="signin-username">Username or email</label>
+          <input id="signin-username" name="username" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="signin-password">Password</label>
+          <input id="signin-password" name="password" type="password" required autocomplete="current-password">
+        </div>
+        <div class="form-row">
+          <button class="btn-primary" type="submit">Sign in</button>
+          <a href="signup.html" class="btn-link">Create account</a>
+        </div>
+        <div id="signin-feedback" class="feedback" role="alert" aria-live="assertive"></div>
+      </form>
+    </div>
+  </main>
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
