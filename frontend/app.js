@@ -1,44 +1,51 @@
 /* Frontend app.js — vanilla JS for the Django backend.
    Adjust BASE_URL if your backend runs elsewhere. */
-const BASE_URL = window.location.origin;
-const ACCESS_TOKEN_KEY = 'access_token';
-const REFRESH_TOKEN_KEY = 'refresh_token';
-const ENDPOINTS = {
-  index: '/api/v1/feed/',
-  upload: '/api/v1/upload/',
-  signin: '/api/v1/signin/',
-  signup: '/api/v1/signup/',
-  token: '/api/v1/auth/token/',
-  settings: '/api/v1/settings/',
-  passwordChange: '/api/v1/settings/password/',
-  profile: (username) => `/api/v1/profile/${encodeURIComponent(username)}/`,
-  like: (id) => `/api/v1/posts/${id}/like/`,
-  comment: (id) => `/api/v1/posts/${id}/comments/`,
-  commentDetail: (id) => `/api/v1/comments/${id}/`,
-  commentLike: (id) => `/api/v1/comments/${id}/like/`,
-  commentSticker: (id) => `/api/v1/comments/${id}/sticker/`,
-  delete: (id) => `/api/v1/posts/${id}/delete/`,
-  edit: (id) => `/api/v1/posts/${id}/edit/`,
-  bookmarks: '/api/v1/bookmarks/',
-  bookmarkCreate: '/api/v1/bookmarks/create/',
-  bookmarkDelete: (id) => `/api/v1/bookmarks/${id}/`,
-  notifications: '/api/v1/notifications/',
-  notificationsUnread: '/api/v1/notifications/unread-count/',
-  messages: '/api/v1/messages/',
-  messagesUnread: '/api/v1/messages/unread-count/',
-  messageDelete: (id) => `/api/v1/messages/${id}/delete/`,
-  messageEdit: (id) => `/api/v1/messages/${id}/edit/`,
-  conversationList: '/api/v1/conversations/',
-  conversationRead: (username) => `/api/v1/conversation/${encodeURIComponent(username)}/read/`,
-  conversationTyping: (username) => `/api/v1/conversation/${encodeURIComponent(username)}/typing/`,
-  stickers: '/api/v1/stickers/defaults/',
-  trending: '/api/v1/trending/',
-  suggested: '/api/v1/suggested/',
-  search: '/api/v1/search/',
-  follow: (username) => `/api/v1/profile/${encodeURIComponent(username)}/follow/`,
-  conversation: (username) => `/api/v1/conversation/${encodeURIComponent(username)}/`,
-  conversationSend: (username) => `/api/v1/conversation/${encodeURIComponent(username)}/send/`,
-};
+(function () {
+  const cfg = window.__APP_CONFIG__ || {};
+  const rawBase = cfg.API_BASE_URL || window.location.origin;
+  const BASE_URL = rawBase.replace(/\/+$/, '');
+
+  const ACCESS_TOKEN_KEY = 'access_token';
+  const REFRESH_TOKEN_KEY = 'refresh_token';
+  const ENDPOINTS = {
+    index: `${BASE_URL}/api/v1/feed/`,
+    upload: `${BASE_URL}/api/v1/upload/`,
+    signin: `${BASE_URL}/api/v1/signin/`,
+    signup: `${BASE_URL}/api/v1/signup/`,
+    token: `${BASE_URL}/api/v1/auth/token/`,
+    settings: `${BASE_URL}/api/v1/settings/`,
+    passwordChange: `${BASE_URL}/api/v1/settings/password/`,
+    profile: (username) => `${BASE_URL}/api/v1/profile/${encodeURIComponent(username)}/`,
+    like: (id) => `${BASE_URL}/api/v1/posts/${id}/like/`,
+    comment: (id) => `${BASE_URL}/api/v1/posts/${id}/comments/`,
+    commentDetail: (id) => `${BASE_URL}/api/v1/comments/${id}/`,
+    commentLike: (id) => `${BASE_URL}/api/v1/comments/${id}/like/`,
+    commentSticker: (id) => `${BASE_URL}/api/v1/comments/${id}/sticker/`,
+    delete: (id) => `${BASE_URL}/api/v1/posts/${id}/delete/`,
+    edit: (id) => `${BASE_URL}/api/v1/posts/${id}/edit/`,
+    bookmarks: `${BASE_URL}/api/v1/bookmarks/`,
+    bookmarkCreate: `${BASE_URL}/api/v1/bookmarks/create/`,
+    bookmarkDelete: (id) => `${BASE_URL}/api/v1/bookmarks/${id}/`,
+    notifications: `${BASE_URL}/api/v1/notifications/`,
+    notificationsUnread: `${BASE_URL}/api/v1/notifications/unread-count/`,
+    messages: `${BASE_URL}/api/v1/messages/`,
+    messagesUnread: `${BASE_URL}/api/v1/messages/unread-count/`,
+    messageDelete: (id) => `${BASE_URL}/api/v1/messages/${id}/delete/`,
+    messageEdit: (id) => `${BASE_URL}/api/v1/messages/${id}/edit/`,
+    conversationList: `${BASE_URL}/api/v1/conversations/`,
+    conversationRead: (username) => `${BASE_URL}/api/v1/conversation/${encodeURIComponent(username)}/read/`,
+    conversationTyping: (username) => `${BASE_URL}/api/v1/conversation/${encodeURIComponent(username)}/typing/`,
+    stickers: `${BASE_URL}/api/v1/stickers/defaults/`,
+    trending: `${BASE_URL}/api/v1/trending/`,
+    suggested: `${BASE_URL}/api/v1/suggested/`,
+    search: `${BASE_URL}/api/v1/search/`,
+    follow: (username) => `${BASE_URL}/api/v1/profile/${encodeURIComponent(username)}/follow/`,
+    conversation: (username) => `${BASE_URL}/api/v1/conversation/${encodeURIComponent(username)}/`,
+    conversationSend: (username) => `${BASE_URL}/api/v1/conversation/${encodeURIComponent(username)}/send/`,
+  };
+
+  window.__APP__ = { BASE_URL, ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, ENDPOINTS };
+})();
 
 // Default sticker catalog (matches the backend DEFAULT_REACTIONS)
 const STICKER_CATALOG = [
