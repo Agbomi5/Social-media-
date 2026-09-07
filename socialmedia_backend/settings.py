@@ -25,6 +25,13 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '.vercel.app,.now.sh').split(',')
 
+# Ensure local development hosts are allowed when DEBUG is enabled
+if DEBUG:
+    ALLOWED_HOSTS.extend(['localhost', '127.0.0.1'])
+
+# Filter out any empty strings
+ALLOWED_HOSTS = [h for h in ALLOWED_HOSTS if h]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

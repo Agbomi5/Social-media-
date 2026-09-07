@@ -82,7 +82,7 @@ a:hover { color: var(--accent-hover); }
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
-  z-index: 90;
+  z-index: 1000; /* raised to ensure header is above overlays/other elements on mobile */
 }
 [data-theme="dark"] .site-header { background: rgba(10, 10, 10, 0.85); }
 
@@ -212,8 +212,10 @@ a:hover { color: var(--accent-hover); }
   -webkit-backdrop-filter: blur(4px);
   z-index: 150;
   animation: fadeIn 0.2s ease;
+  /* Prevent the overlay from blocking taps when it's not visible/open */
+  pointer-events: none;
 }
-.modal-overlay.open { display: block; }
+.modal-overlay.open { display: block; pointer-events: auto; }
 
 .profile-modal,
 .posts-modal,
