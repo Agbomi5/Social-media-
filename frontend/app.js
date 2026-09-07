@@ -521,17 +521,23 @@ function renderPost(post) {
   likeButton.addEventListener('mouseleave', () => picker.classList.remove('open'));
   likeButton.addEventListener('click', async (e) => {
     if (e.target.closest('.picker-emoji')) return; // handled by picker
-    e.preventDefault();
-    likeButton.disabled = true;
-    try {
-      const result = await authFetch(ENDPOINTS.like(post.id), { method: 'POST' });
-      applyReactionResult(post, result);
-      updateLikeButton(likeButton, post);
-      updateReactionSummary(node, post);
-    } catch (err) {
-      showToast(`Unable to like: ${err.message}`, 'error');
-    } finally {
-      likeButton.disabled = false;
+    if (picker.classList.contains('open')) {
+      picker.classList.remove('open');
+      e.preventDefault();
+      likeButton.disabled = true;
+      try {
+        const result = await authFetch(ENDPOINTS.like(post.id), { method: 'POST' });
+        applyReactionResult(post, result);
+        updateLikeButton(likeButton, post);
+        updateReactionSummary(node, post);
+      } catch (err) {
+        showToast(`Unable to like: ${err.message}`, 'error');
+      } finally {
+        likeButton.disabled = false;
+      }
+    } else {
+      picker.classList.add('open');
+      e.preventDefault();
     }
   });
 
@@ -770,21 +776,27 @@ function renderCommentNode(c, post) {
 
   reactionBtn.addEventListener('click', async (e) => {
     if (e.target.closest('.picker-emoji')) return;
-    e.preventDefault();
-    reactionBtn.disabled = true;
-    try {
-      const res = await authFetch(ENDPOINTS.commentLike(c.id), { method: 'POST' });
-      c.liked = !!res.liked;
-      c.likes_count = res.likes_count;
-      reactionBtn.classList.toggle('liked', c.liked);
-      reactionBtn.setAttribute('aria-pressed', c.liked ? 'true' : 'false');
-      reactionBtn.querySelector('.icon').textContent = c.liked ? '👍' : '👍';
-      reactionBtn.querySelector('.count').textContent = c.likes_count;
-      updateCommentReactionSummary(wrap, c);
-    } catch (err) {
-      showToast(`Unable to like: ${err.message}`, 'error');
-    } finally {
-      reactionBtn.disabled = false;
+    if (reactionPicker.classList.contains('open')) {
+      reactionPicker.classList.remove('open');
+      e.preventDefault();
+      reactionBtn.disabled = true;
+      try {
+        const res = await authFetch(ENDPOINTS.commentLike(c.id), { method: 'POST' });
+        c.liked = !!res.liked;
+        c.likes_count = res.likes_count;
+        reactionBtn.classList.toggle('liked', c.liked);
+        reactionBtn.setAttribute('aria-pressed', c.liked ? 'true' : 'false');
+        reactionBtn.querySelector('.icon').textContent = c.liked ? '👍' : '👍';
+        reactionBtn.querySelector('.count').textContent = c.likes_count;
+        updateCommentReactionSummary(wrap, c);
+      } catch (err) {
+        showToast(`Unable to like: ${err.message}`, 'error');
+      } finally {
+        reactionBtn.disabled = false;
+      }
+    } else {
+      reactionPicker.classList.add('open');
+      e.preventDefault();
     }
   });
   reactionBtn.addEventListener('mouseenter', () => reactionPicker.classList.add('open'));
@@ -2364,5 +2376,11 @@ async function handleChangePassword(e) {
     submitBtn.disabled = false;
   }
 }
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.btn-reaction') && !e.target.closest('.btn-comment-reaction')) {
+    document.querySelectorAll('.reaction-picker.open, .comment-reaction-picker.open').forEach((p) => p.classList.remove('open'));
+  }
+});
 
 document.addEventListener('DOMContentLoaded', init);

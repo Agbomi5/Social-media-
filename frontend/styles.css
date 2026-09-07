@@ -52,7 +52,7 @@
   --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.6);
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 
@@ -61,10 +61,12 @@ body {
   background: var(--bg);
   margin: 0;
   color: var(--text);
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.5;
   transition: background 0.2s ease, color 0.2s ease;
   min-height: 100vh;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 a { color: var(--accent); text-decoration: none; transition: var(--transition); }
@@ -130,6 +132,9 @@ a:hover { color: var(--accent-hover); }
   font-size: 0.9rem;
   white-space: nowrap;
   text-decoration: none;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .nav-item:hover { background: var(--bg-secondary); color: var(--text); }
 .nav-item.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
@@ -152,6 +157,9 @@ a:hover { color: var(--accent-hover); }
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .icon-btn:hover { background: var(--bg-secondary); transform: scale(1.05); }
 
@@ -473,6 +481,9 @@ a:hover { color: var(--accent-hover); }
   cursor: pointer;
   transition: var(--transition);
   font-family: inherit;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .create-post-action:hover { background: var(--bg-secondary); color: var(--text); }
 .create-post-action .icon { font-size: 1.2rem; }
@@ -504,6 +515,7 @@ a:hover { color: var(--accent-hover); }
 .post-avatar { width: 40px; height: 40px; flex-shrink: 0; }
 .post-author-block { flex: 1; min-width: 0; }
 .post-author { font-weight: 600; color: var(--text); font-size: 0.95rem; display: block; }
+.post-author:hover { text-decoration: underline; }
 .post-time { font-size: 0.8rem; color: var(--text-secondary); }
 
 .post-body { padding: 0 18px 14px; line-height: 1.5; color: var(--text); white-space: pre-wrap; word-wrap: break-word; }
@@ -545,6 +557,9 @@ a:hover { color: var(--accent-hover); }
   cursor: pointer;
   transition: var(--transition);
   font-family: inherit;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .post-action:hover { background: var(--bg-secondary); color: var(--text); }
 .post-action.active { color: var(--accent); }
@@ -583,7 +598,7 @@ a:hover { color: var(--accent-hover); }
   background: var(--bg);
   color: var(--text);
   font-family: inherit;
-  font-size: 0.9rem;
+  font-size: 16px;
   transition: var(--transition);
 }
 .input-comment:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-light); }
@@ -597,9 +612,12 @@ a:hover { color: var(--accent-hover); }
   border: none;
   cursor: pointer;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   transition: var(--transition);
   font-family: inherit;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .btn-small:hover { background: var(--accent-hover); }
 .btn-small:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -616,6 +634,9 @@ a:hover { color: var(--accent-hover); }
   transition: var(--transition);
   font-family: inherit;
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35); }
 .btn-primary:active { transform: translateY(0); }
@@ -632,6 +653,9 @@ a:hover { color: var(--accent-hover); }
   font-size: 0.95rem;
   transition: var(--transition);
   font-family: inherit;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .btn-secondary:hover { background: var(--bg-tertiary); }
 
@@ -644,6 +668,9 @@ a:hover { color: var(--accent-hover); }
   font-size: 0.9rem;
   font-family: inherit;
   transition: var(--transition);
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .btn-link:hover { color: var(--accent-hover); }
 .btn-link:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -657,6 +684,9 @@ a:hover { color: var(--accent-hover); }
   cursor: pointer;
   font-weight: 600;
   transition: var(--transition);
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .btn-danger:hover { background: #dc2626; }
 
@@ -691,6 +721,9 @@ input, textarea, select {
   width: 100%;
   transition: var(--transition);
   font-family: inherit;
+  font-size: 16px;
+  -webkit-user-select: text;
+  user-select: text;
 }
 input:focus, textarea:focus, select:focus {
   outline: none;
@@ -886,10 +919,10 @@ input:disabled, textarea:disabled { background: var(--bg-secondary); cursor: not
 .comment-action-btn:hover { color: var(--accent); background: var(--bg-secondary); }
 .comment-replies { margin-left: 48px; margin-top: 8px; display: flex; flex-direction: column; gap: 10px; padding-left: 12px; border-left: 2px solid var(--border); }
 .comment-reply-form { display: flex; gap: 8px; margin-top: 8px; margin-left: 48px; }
-.comment-reply-form input { flex: 1; padding: 8px 14px; font-size: 0.9rem; border-radius: 999px; border: 1px solid var(--border); background: var(--card); }
+.comment-reply-form input { flex: 1; padding: 8px 14px; font-size: 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--card); }
 .comment-reply-form button { font-size: 0.85rem; }
 .comment-edit-form { display: flex; gap: 8px; margin-top: 6px; }
-.comment-edit-form input { flex: 1; padding: 8px 14px; font-size: 0.9rem; border-radius: 999px; border: 1px solid var(--border); background: var(--card); }
+.comment-edit-form input { flex: 1; padding: 8px 14px; font-size: 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--card); }
 .comment-reaction-summary {
   display: flex; align-items: center; gap: 4px; margin-top: 4px; padding-left: 4px;
   font-size: 0.8rem; color: var(--text-secondary);
@@ -951,7 +984,7 @@ input:disabled, textarea:disabled { background: var(--bg-secondary); cursor: not
 .form-group input, .form-group textarea, .form-group select {
   width: 100%; padding: 10px 12px; border: 1px solid var(--border);
   border-radius: var(--radius-sm); background: var(--bg); color: var(--text);
-  font-family: inherit; font-size: 0.9rem;
+  font-family: inherit; font-size: 16px;
 }
 .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
   outline: 2px solid var(--accent); outline-offset: 1px;
@@ -1042,10 +1075,10 @@ body.messages-page-body #messages-root {
 .chat-input-form { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-end; background: var(--card); }
 .chat-input-form textarea { flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: 20px; background: var(--bg); color: var(--text); resize: none; max-height: 100px; font-family: inherit; }
 .chat-input-form textarea:focus { outline: 2px solid var(--accent); outline-offset: 0; }
-.chat-input-form .btn-send { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: var(--accent-contrast); border: none; cursor: pointer; font-size: 1.1rem; }
+.chat-input-form .btn-send { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: var(--accent-contrast); border: none; cursor: pointer; font-size: 1.1rem; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
 .chat-input-form .btn-send:hover { background: var(--accent-hover); }
 .chat-input-form .btn-send:disabled { opacity: 0.5; cursor: not-allowed; }
-.chat-input-form .btn-attach { background: none; border: none; cursor: pointer; padding: 8px; font-size: 1.1rem; color: var(--text-secondary); }
+.chat-input-form .btn-attach { background: none; border: none; cursor: pointer; padding: 8px; font-size: 1.1rem; color: var(--text-secondary); touch-action: manipulation; -webkit-user-select: none; user-select: none; }
 .chat-input-form .btn-attach:hover { color: var(--accent); }
 .chat-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-secondary); gap: 8px; }
 .chat-empty .icon { font-size: 3rem; opacity: 0.5; }
