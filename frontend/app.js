@@ -1411,6 +1411,16 @@ function toggleTheme() {
   applyTheme(current === 'dark' ? 'light' : 'dark');
 }
 
+function updateBottomNavState(path) {
+  document.querySelectorAll('.bottom-nav-item').forEach(item => item.classList.remove('active'));
+  const activate = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+  };
+  if (path === 'index.html' || path === '' || path === '/') activate('bottom-nav-home');
+  else if (path === 'messages.html') activate('bottom-nav-messages');
+}
+
 async function init() {
   const path = location.pathname.split('/').pop();
 
@@ -1418,6 +1428,8 @@ async function init() {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) applyTheme(savedTheme);
   } catch {}
+
+  updateBottomNavState(path);
 
   if (path === 'signin.html') {
     if (readAccessToken()) { goTo('index.html'); return; }
@@ -1447,6 +1459,15 @@ async function init() {
   if (path === 'messages.html') {
     const params = new URLSearchParams(location.search);
     const user = params.get('user');
+    const bottomNavSearch = document.getElementById('bottom-nav-search');
+    if (bottomNavSearch) bottomNavSearch.addEventListener('click', (e) => { e.preventDefault(); showSearchModal(); });
+    const bottomNavMessages = document.getElementById('bottom-nav-messages');
+    if (bottomNavMessages) bottomNavMessages.addEventListener('click', (e) => { e.preventDefault(); goTo('messages.html'); });
+    const bottomNavNotifications = document.getElementById('bottom-nav-notifications');
+    if (bottomNavNotifications) bottomNavNotifications.addEventListener('click', (e) => { e.preventDefault(); loadNotifications(); openModal('notifications-modal'); });
+    const bottomNavProfile = document.getElementById('bottom-nav-profile');
+    if (bottomNavProfile) bottomNavProfile.addEventListener('click', (e) => { e.preventDefault(); showEditProfile(); });
+    updateBottomNavState(path);
     await initMessagesPage(user);
     return;
   }
@@ -1557,6 +1578,16 @@ async function init() {
   const navProfile = document.getElementById('nav-profile');
   if (navProfile) navProfile.addEventListener('click', (e) => { e.preventDefault(); showEditProfile(); });
 
+  // Bottom nav handlers
+  const bottomNavSearch = document.getElementById('bottom-nav-search');
+  if (bottomNavSearch) bottomNavSearch.addEventListener('click', (e) => { e.preventDefault(); showSearchModal(); });
+  const bottomNavMessages = document.getElementById('bottom-nav-messages');
+  if (bottomNavMessages) bottomNavMessages.addEventListener('click', (e) => { e.preventDefault(); goTo('messages.html'); });
+  const bottomNavNotifications = document.getElementById('bottom-nav-notifications');
+  if (bottomNavNotifications) bottomNavNotifications.addEventListener('click', (e) => { e.preventDefault(); loadNotifications(); openModal('notifications-modal'); });
+  const bottomNavProfile = document.getElementById('bottom-nav-profile');
+  if (bottomNavProfile) bottomNavProfile.addEventListener('click', (e) => { e.preventDefault(); showEditProfile(); });
+
   loadTrending();
   loadSuggested();
   loadStories();
@@ -1663,11 +1694,23 @@ async function loadUnreadCounts() {
       notifBadge.textContent = c;
       notifBadge.style.display = c > 0 ? 'flex' : 'none';
     }
+    const bottomNotifBadge = document.getElementById('nav-notifications-badge');
+    if (bottomNotifBadge && notifData) {
+      const c = notifData.unread_notifications_count || 0;
+      bottomNotifBadge.textContent = c;
+      bottomNotifBadge.style.display = c > 0 ? 'flex' : 'none';
+    }
     const msgBadge = document.getElementById('messages-badge');
     if (msgBadge && msgData) {
       const c = msgData.unread_messages_count || 0;
       msgBadge.textContent = c;
       msgBadge.style.display = c > 0 ? 'flex' : 'none';
+    }
+    const bottomMsgBadge = document.getElementById('nav-messages-badge');
+    if (bottomMsgBadge && msgData) {
+      const c = msgData.unread_messages_count || 0;
+      bottomMsgBadge.textContent = c;
+      bottomMsgBadge.style.display = c > 0 ? 'flex' : 'none';
     }
   } catch {}
 }

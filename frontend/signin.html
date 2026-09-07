@@ -28,6 +28,32 @@
       </form>
     </div>
   </main>
+
+  <!-- Bottom Tab Bar (Mobile) -->
+  <nav class="bottom-nav" aria-label="Main navigation">
+    <a href="index.html" class="bottom-nav-item" data-nav="home" id="bottom-nav-home" aria-label="Home">
+      <span class="nav-icon">🏠</span>
+      <span>Home</span>
+    </a>
+    <a href="#" class="bottom-nav-item" data-nav="search" id="bottom-nav-search" aria-label="Search">
+      <span class="nav-icon">🔍</span>
+      <span>Search</span>
+    </a>
+    <a href="messages.html" class="bottom-nav-item" data-nav="messages" id="bottom-nav-messages" aria-label="Messages">
+      <span class="nav-icon">💬</span>
+      <span>Messages</span>
+      <span class="bottom-nav-badge" id="nav-messages-badge" style="display:none">0</span>
+    </a>
+    <a href="#" class="bottom-nav-item" data-nav="notifications" id="bottom-nav-notifications" aria-label="Notifications">
+      <span class="nav-icon">🔔</span>
+      <span>Alerts</span>
+      <span class="bottom-nav-badge" id="nav-notifications-badge" style="display:none">0</span>
+    </a>
+    <a href="#" class="bottom-nav-item" data-nav="profile" id="bottom-nav-profile" aria-label="Profile">
+      <span class="nav-icon">👤</span>
+      <span>Profile</span>
+    </a>
+  </nav>
   <script src="/static/app.js" defer></script>
 </body>
 </html>
