@@ -1,19 +1,16 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "build.sh",
-      "use": "@vercel/bash"
-    },
-    {
-      "src": "socialmedia_backend/wsgi.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "15mb",
-        "runtime": "python3.9"
-      }
+  "buildCommand": "./build.sh",
+  "devCommand": "python manage.py runserver",
+  "installCommand": "pip install -r requirements.txt",
+  "framework": "django",
+  "regions": ["iad1"],
+  "functions": {
+    "socialmedia_backend/wsgi.py": {
+      "maxDuration": 30,
+      "runtime": "python3.9"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/static/(.*)",
