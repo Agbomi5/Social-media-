@@ -1,13 +1,32 @@
 {
   "version": 2,
+  "buildCommand": "python manage.py collectstatic --noinput",
   "builds": [
     {
       "src": "socialmedia_backend/wsgi.py",
       "use": "@vercel/python",
-      "config": { "maxLambdaSize": "15mb", "runtime": "python3.12" }
+      "config": { 
+        "maxLambdaSize": "15mb", 
+        "runtime": "python3.12",
+        "outputDirectory": "staticfiles"
+      }
     }
   ],
   "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "/staticfiles/$1",
+      "headers": {
+        "cache-control": "public, max-age=3600, immutable"
+      }
+    },
+    {
+      "src": "/media/(.*)",
+      "dest": "/media/$1",
+      "headers": {
+        "cache-control": "public, max-age=3600"
+      }
+    },
     {
       "src": "/(.*)",
       "dest": "socialmedia_backend/wsgi.py"

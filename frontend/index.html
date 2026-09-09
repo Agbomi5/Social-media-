@@ -1,4 +1,5 @@
 <!doctype html>
+{% load static %}
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -6,23 +7,7 @@
   <title>SocialMedia — Feed</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <!-- Dynamically load stylesheet so both Django (/static/) and static hosting work -->
-  <script>
-    (function(){
-      const cssVersion = '?v=20260909';
-      const cssCandidates = ['styles.css'+cssVersion,'/static/styles.css'+cssVersion,'frontend/styles.css'+cssVersion,'/frontend/styles.css'+cssVersion];
-      function tryLoad(i){
-        if(i>=cssCandidates.length) return;
-        const l = document.createElement('link');
-        l.rel = 'stylesheet';
-        l.href = cssCandidates[i];
-        l.onload = function(){ /* loaded */ };
-        l.onerror = function(){ l.remove(); tryLoad(i+1); };
-        document.head.appendChild(l);
-      }
-      tryLoad(0);
-    })();
-  </script>
+  <link rel="stylesheet" href="{% static 'styles.css' %}">
 </head>
 <body>
   <header class="site-header">
@@ -300,17 +285,10 @@
 
   <script>
     (function(){
-      const scriptCandidates = ['app.js','/static/app.js','frontend/app.js','/frontend/app.js'];
-      function tryLoad(i){
-        if(i>=scriptCandidates.length) return;
-        const s = document.createElement('script');
-        s.defer = true;
-        s.src = scriptCandidates[i];
-        s.onload = function(){};
-        s.onerror = function(){ s.remove(); tryLoad(i+1); };
-        document.body.appendChild(s);
-      }
-      tryLoad(0);
+      const s = document.createElement('script');
+      s.defer = true;
+      s.src = "{% static 'app.js' %}";
+      document.body.appendChild(s);
     })();
   </script>
 </body>
