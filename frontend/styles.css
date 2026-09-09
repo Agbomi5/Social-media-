@@ -796,7 +796,88 @@ input:disabled, textarea:disabled { background: var(--bg-secondary); cursor: not
 .feedback.error { color: var(--danger); }
 .feedback.success { color: var(--success); }
 
-.visually-hidden { position: absolute !important; height: 1px; width: 1px; overflow: hidden; clip: rect(1px,1px,1px,1px); white-space: nowrap; }
+ 
+
+/* ===== Bottom Tab Bar (Mobile) ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 6px 0 calc(6px + env(safe-area-inset-bottom, 0px));
+  z-index: 1000;
+  padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+  transition: transform 0.2s ease;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.04);
+}
+[data-theme="dark"] .bottom-nav { background: rgba(10, 10, 10, 0.95); }
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 12px;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition);
+  min-width: 56px;
+  min-height: 48px;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  position: relative;
+  border-radius: 12px;
+  margin: 2px 4px;
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: inherit;
+}
+.bottom-nav-item .nav-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform 0.15s ease;
+}
+.bottom-nav-item.active {
+  color: var(--accent);
+}
+.bottom-nav-item.active .nav-icon {
+  transform: translateY(-2px);
+}
+.bottom-nav-item:active .nav-icon {
+  transform: scale(0.9);
+}
+.bottom-nav-badge {
+  position: absolute;
+  top: 4px;
+  right: 10px;
+  background: var(--danger);
+  color: #fff;
+  border-radius: 999px;
+  min-width: 16px;
+  height: 16px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border: 2px solid var(--card);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
 
 /* ===== Mobile First - Base Styles ===== */
 @media (max-width: 768px) {

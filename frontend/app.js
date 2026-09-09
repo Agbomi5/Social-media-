@@ -1459,10 +1459,12 @@ async function init() {
   if (path === 'messages.html') {
     const params = new URLSearchParams(location.search);
     const user = params.get('user');
+    const bottomNavHome = document.getElementById('bottom-nav-home');
+    if (bottomNavHome) bottomNavHome.addEventListener('click', () => goTo('index.html'));
     const bottomNavSearch = document.getElementById('bottom-nav-search');
     if (bottomNavSearch) bottomNavSearch.addEventListener('click', (e) => { e.preventDefault(); showSearchModal(); });
     const bottomNavMessages = document.getElementById('bottom-nav-messages');
-    if (bottomNavMessages) bottomNavMessages.addEventListener('click', (e) => { e.preventDefault(); goTo('messages.html'); });
+    if (bottomNavMessages) bottomNavMessages.addEventListener('click', () => goTo('messages.html'));
     const bottomNavNotifications = document.getElementById('bottom-nav-notifications');
     if (bottomNavNotifications) bottomNavNotifications.addEventListener('click', (e) => { e.preventDefault(); loadNotifications(); openModal('notifications-modal'); });
     const bottomNavProfile = document.getElementById('bottom-nav-profile');
@@ -1579,10 +1581,12 @@ async function init() {
   if (navProfile) navProfile.addEventListener('click', (e) => { e.preventDefault(); showEditProfile(); });
 
   // Bottom nav handlers
+  const bottomNavHome = document.getElementById('bottom-nav-home');
+  if (bottomNavHome) bottomNavHome.addEventListener('click', () => goTo('index.html'));
   const bottomNavSearch = document.getElementById('bottom-nav-search');
   if (bottomNavSearch) bottomNavSearch.addEventListener('click', (e) => { e.preventDefault(); showSearchModal(); });
   const bottomNavMessages = document.getElementById('bottom-nav-messages');
-  if (bottomNavMessages) bottomNavMessages.addEventListener('click', (e) => { e.preventDefault(); goTo('messages.html'); });
+  if (bottomNavMessages) bottomNavMessages.addEventListener('click', () => goTo('messages.html'));
   const bottomNavNotifications = document.getElementById('bottom-nav-notifications');
   if (bottomNavNotifications) bottomNavNotifications.addEventListener('click', (e) => { e.preventDefault(); loadNotifications(); openModal('notifications-modal'); });
   const bottomNavProfile = document.getElementById('bottom-nav-profile');
