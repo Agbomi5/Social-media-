@@ -9,7 +9,8 @@
   <!-- Dynamically load stylesheet so both Django (/static/) and static hosting work -->
   <script>
     (function(){
-      const cssCandidates = ['styles.css','/static/styles.css','frontend/styles.css','/frontend/styles.css'];
+      const cssVersion = '?v=20260909';
+      const cssCandidates = ['styles.css'+cssVersion,'/static/styles.css'+cssVersion,'frontend/styles.css'+cssVersion,'/frontend/styles.css'+cssVersion];
       function tryLoad(i){
         if(i>=cssCandidates.length) return;
         const l = document.createElement('link');
