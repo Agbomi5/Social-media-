@@ -1,0 +1,43 @@
+# Vercel ignore file
+# Files and directories to exclude from deployment
+
+# Dependencies
+venv/
+__pycache__/
+*.pyc
+
+# Database
+*.sqlite3
+db.sqlite3
+
+# Media files (handled separately)
+media/
+
+# Static files source (built during deployment)
+static/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment files
+.env
+.env.local
+.env.production.local
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Django
+staticfiles/
