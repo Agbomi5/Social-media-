@@ -90,12 +90,17 @@ function buildUrl(path) {
 async function apiRequest(path, opts = {}) {
   const url = buildUrl(path);
   const headers = new Headers(opts.headers || {});
-  const csrf = document.cookie.split('; ').find((row) => row.startsWith('csrftoken='));
-  if (csrf) {
-    headers.set('X-CSRFToken', csrf.split('=')[1]);
-  }
   if (!headers.has('Accept')) {
     headers.set('Accept', 'application/json');
+  }
+  // Only add CSRF token for non-JWT requests (form submissions, etc.)
+  // Check if Authorization header is already set (JWT)
+  const hasAuthHeader = headers.has('Authorization') || (opts.headers && opts.headers.Authorization);
+  if (!hasAuthHeader) {
+    const csrf = document.cookie.split('; ').find((row) => row.startsWith('csrftoken='));
+    if (csrf) {
+      headers.set('X-CSRFToken', csrf.split('=')[1]);
+    }
   }
   const res = await fetch(url, { ...opts, headers, credentials: 'include' });
   const text = await res.text();
@@ -127,6 +132,17 @@ async function apiRequest(path, opts = {}) {
   return data;
 }
 
+// For form submissions that need CSRF (non-JWT auth like signin/signup)
+async function formFetch(path, opts = {}) {
+  const headers = new Headers(opts.headers || {});
+  headers.set('Accept', 'application/json');
+  const csrf = document.cookie.split('; ').find((row) => row.startsWith('csrftoken='));
+  if (csrf) {
+    headers.set('X-CSRFToken', csrf.split('=')[1]);
+  }
+  return apiRequest(path, { ...opts, headers });
+}
+
 async function authFetch(path, opts = {}) {
   const token = readAccessToken();
   const headers = new Headers(opts.headers || {});
@@ -134,7 +150,70 @@ async function authFetch(path, opts = {}) {
     headers.set('Authorization', `Bearer ${token}`);
   }
   headers.set('Accept', 'application/json');
+  // Use apiRequest but with JWT already set - it will skip CSRF
   return apiRequest(path, { ...opts, headers });
+}
+
+/* ===== Bottom Navigation (Mobile) ===== */
+function initBottomNav() {
+  const bottomNav = document.querySelector('.bottom-nav');
+  if (!bottomNav) return;
+
+  const navItems = bottomNav.querySelectorAll('.bottom-nav-item');
+  const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
+  // Map page to nav data attribute
+  const pageToNav = {
+    'index.html': 'home',
+    'signin.html': 'home',
+    'signup.html': 'home',
+    'messages.html': 'messages',
+  };
+
+  const activeNav = pageToNav[currentPage] || 'home';
+
+  navItems.forEach(item => {
+    const navType = item.dataset.nav;
+    if (navType === activeNav) {
+      item.classList.add('active');
+    } else {
+      item.classList.remove('active');
+    }
+
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      switch (navType) {
+        case 'home':
+          goTo('index.html');
+          break;
+        case 'search':
+          // Could open search modal or navigate to search page
+          const searchInput = document.querySelector('input[type="search"]') || document.getElementById('search-input');
+          if (searchInput) searchInput.focus();
+          break;
+        case 'messages':
+          goTo('messages.html');
+          break;
+        case 'notifications':
+          // Open notifications modal
+          const notifBtn = document.getElementById('btn-notifications-modal');
+          if (notifBtn) notifBtn.click();
+          break;
+        case 'profile':
+          // Open profile modal
+          const profileBtn = document.getElementById('profile-pic-btn');
+          if (profileBtn) profileBtn.click();
+          break;
+      }
+    });
+  });
+}
+
+/* Call initBottomNav when DOM is ready */
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initBottomNav);
+} else {
+  initBottomNav();
 }
 
 function md5(string) {
@@ -1156,13 +1235,13 @@ async function handleSignin(e) {
   setFeedback(feedback, 'Signing in…', false);
   try {
     const formBody = new URLSearchParams({ username, password });
-    await apiRequest(ENDPOINTS.signin, {
+    await formFetch(ENDPOINTS.signin, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Accept': 'application/json' },
       body: formBody,
     });
     try {
-      const tokenData = await apiRequest(ENDPOINTS.token, {
+      const tokenData = await formFetch(ENDPOINTS.token, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Accept': 'application/json' },
         body: formBody,
@@ -1197,20 +1276,20 @@ async function handleSignup(e) {
   submitBtn.disabled = true;
   setFeedback(feedback, 'Creating account…', false);
   try {
-    await apiRequest(ENDPOINTS.signup, {
+    await formFetch(ENDPOINTS.signup, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify({ username, email, password, confirm_password: password }),
     });
 
     const formBody = new URLSearchParams({ username, password });
-    await apiRequest(ENDPOINTS.signin, {
+    await formFetch(ENDPOINTS.signin, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Accept': 'application/json' },
       body: formBody,
     });
     try {
-      const tokenData = await apiRequest(ENDPOINTS.token, {
+      const tokenData = await formFetch(ENDPOINTS.token, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 'Accept': 'application/json' },
         body: formBody,
