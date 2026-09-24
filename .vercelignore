@@ -13,9 +13,6 @@ db.sqlite3
 # Media files (handled separately)
 media/
 
-# Static files source (built during deployment)
-static/
-
 # IDE
 .vscode/
 .idea/
@@ -38,6 +35,3 @@ Thumbs.db
 .coverage
 htmlcov/
 .pytest_cache/
-
-# Django
-staticfiles/
