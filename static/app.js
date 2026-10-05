@@ -1,4 +1,12 @@
 (() => {
+  document.addEventListener('submit', event => {
+    if (event.target?.id === 'postForm' && event.submitter?.value === 'cancel') {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      document.getElementById('composerDialog')?.close();
+    }
+  }, true);
+
   const base = (window.__APP_CONFIG__?.API_BASE_URL || location.origin).replace(/\/$/, '');
   const api = (path, options = {}) => {
     const headers = new Headers(options.headers || {}), token = localStorage.getItem('vordi_access');

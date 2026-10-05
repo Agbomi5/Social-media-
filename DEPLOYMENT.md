@@ -49,19 +49,16 @@ python -c "from django.core.management.utils import get_random_secret_key; print
 
 ### 4. Database Setup
 
-After first deployment, run migrations:
+The Vercel build applies Django migrations automatically. Make sure `DATABASE_URL`
+is configured for each Vercel environment (Production, Preview, and Development)
+that you deploy. Use a separate database for Preview deployments so preview builds
+cannot apply migrations to your production database.
+
+To create an administrator after deployment, use the production database URL locally:
 ```bash
-# In Vercel CLI or locally with production DATABASE_URL
 vercel env pull .env.production
 source .env.production
-python manage.py migrate
 python manage.py createsuperuser
-```
-
-Or use Vercel's CLI:
-```bash
-vercel run python manage.py migrate
-vercel run python manage.py createsuperuser
 ```
 
 ### 5. Media Files
@@ -148,7 +145,7 @@ python manage.py runserver
 ### Database connection errors
 1. Verify `DATABASE_URL` format: `postgresql://user:pass@host:port/dbname?sslmode=require`
 2. Check database allows connections from Vercel's IP ranges
-3. Run migrations after deployment
+3. Check Vercel build logs for migration errors
 
 ### CORS errors
 1. Add your Vercel domain to `CORS_ALLOWED_ORIGINS` and `CSRF_TRUSTED_ORIGINS`

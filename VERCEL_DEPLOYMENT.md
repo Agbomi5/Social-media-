@@ -48,14 +48,12 @@ python -c "from django.core.management.utils import get_random_secret_key; print
 1. Add your custom domain in Vercel (if applicable)
 2. Update `ALLOWED_HOSTS` and `CORS_ALLOWED_ORIGINS` with your actual domain
 
-## Step 4: Migrate Database
+## Step 4: Database Migrations
 
-After first deployment, you need to run migrations:
-
-```bash
-# On your local machine with DATABASE_URL set
-DJANGO_SETTINGS_MODULE=socialmedia_backend.settings python manage.py migrate
-```
+The Vercel build applies Django migrations automatically. Configure a `DATABASE_URL`
+for each Vercel environment you deploy. Use a separate database for Preview
+deployments so preview builds cannot migrate your production database. If migrations
+fail, the deployment build fails and the Vercel build logs show the database error.
 
 ## Step 5: Create Superuser (Optional)
 
