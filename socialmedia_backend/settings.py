@@ -119,6 +119,23 @@ STORAGES = {
     'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
     'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
 }
+
+if os.getenv('SUPABASE_S3_BUCKET'):
+    supabase_project_ref = os.environ['SUPABASE_PROJECT_REF']
+    supabase_media_bucket = os.environ['SUPABASE_S3_BUCKET']
+    STORAGES['default'] = {
+        'BACKEND': 'storages.backends.s3.S3Storage',
+        'OPTIONS': {
+            'access_key': os.environ['SUPABASE_S3_ACCESS_KEY_ID'],
+            'secret_key': os.environ['SUPABASE_S3_SECRET_ACCESS_KEY'],
+            'bucket_name': supabase_media_bucket,
+            'endpoint_url': f'https://{supabase_project_ref}.supabase.co/storage/v1/s3',
+            'region_name': 'us-east-1',
+            'addressing_style': 'path',
+            'custom_domain': f'{supabase_project_ref}.supabase.co/storage/v1/object/public/{supabase_media_bucket}',
+            'querystring_auth': False,
+        },
+    }
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'

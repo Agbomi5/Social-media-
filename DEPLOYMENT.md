@@ -63,28 +63,24 @@ python manage.py createsuperuser
 
 ### 5. Media Files
 
-**Important**: Vercel's filesystem is read-only. Media uploads (avatars, post images/videos) won't persist on Vercel.
+Vercel's filesystem is temporary. Configure Supabase Storage so profile pictures
+and post media persist:
 
-Options:
-- **AWS S3**: Use `django-storages` with `boto3`
-- **Cloudinary**: Use `cloudinary-storage`
-- **Supabase Storage**: Use `supabase-storage`
+1. In Supabase, create a **public** bucket (for example, `vordi-media`). Public
+   buckets allow the app's existing public media links to display.
+2. In **Storage → Settings → S3 Connection**, create S3 credentials.
+3. Add these Vercel environment variables:
 
-Example for S3 (add to settings.py):
-```python
-if not DEBUG:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')
-```
+| Variable | Value |
+|----------|-------|
+| `SUPABASE_PROJECT_REF` | Project reference from the Supabase project URL |
+| `SUPABASE_S3_BUCKET` | Exact bucket name, such as `vordi-media` |
+| `SUPABASE_S3_ACCESS_KEY_ID` | Supabase Storage S3 access key |
+| `SUPABASE_S3_SECRET_ACCESS_KEY` | Supabase Storage S3 secret key |
 
-Add to requirements.txt:
-```
-django-storages>=1.14.0
-boto3>=1.34.0
-```
+The app uses Supabase Storage for uploads when configured. Keep the S3 credentials
+private and redeploy after setting the variables. The client limits each upload
+to 4 MB to stay within Vercel's request-size limit.
 
 ## Local Development
 

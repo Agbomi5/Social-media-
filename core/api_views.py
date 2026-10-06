@@ -1,4 +1,5 @@
 import logging
+import re
 from django.db.models import Q, Count, Prefetch
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
@@ -363,6 +364,22 @@ class CommentListCreateView(generics.ListCreateAPIView):
                 post=post,
                 comment=comment,
                 text=f"{self.request.user.username} replied to your comment",
+            )
+        mentioned_usernames = set(re.findall(
+            r'(?<![\w@])@([\w-]+(?:\.[\w-]+)*)',
+            comment.content,
+        ))
+        mentioned_users = Profile.objects.filter(
+            username__in=mentioned_usernames,
+        ).exclude(pk=self.request.user.pk)
+        for mentioned_user in mentioned_users:
+            Notification.objects.create(
+                recipient=mentioned_user,
+                sender=self.request.user,
+                notification_type='mention',
+                post=post,
+                comment=comment,
+                text=f"{self.request.user.username} mentioned you in a comment",
             )
         Activity.objects.create(
             user=self.request.user, activity_type='comment', post=post,

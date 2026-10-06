@@ -18,8 +18,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ProfileSerializer(serializers.ModelSerializer):
-    followers_count = serializers.IntegerField(read_only=True)
-    following_count = serializers.IntegerField(read_only=True)
+    followers_count = serializers.SerializerMethodField()
+    following_count = serializers.SerializerMethodField()
     profile_image_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -30,7 +30,10 @@ class ProfileSerializer(serializers.ModelSerializer):
             'is_verified', 'is_private', 'is_active', 'is_staff', 'date_joined',
             'last_active', 'followers_count', 'following_count',
         ]
-        read_only_fields = ['id', 'username', 'is_active', 'is_staff', 'date_joined', 'followers_count', 'following_count']
+        read_only_fields = [
+            'id', 'username', 'is_active', 'is_staff', 'is_verified',
+            'date_joined', 'followers_count', 'following_count',
+        ]
         extra_kwargs = {
             'email': {'required': True},
         }
@@ -43,6 +46,12 @@ class ProfileSerializer(serializers.ModelSerializer):
             except Exception:
                 return None
         return None
+
+    def get_followers_count(self, obj):
+        return FollowersCount.objects.filter(username=obj).count()
+
+    def get_following_count(self, obj):
+        return FollowersCount.objects.filter(follower=obj.username).count()
 
     def validate_username(self, value):
         if len(value) < 3:

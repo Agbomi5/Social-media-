@@ -100,21 +100,22 @@ vercel --prod
 - Check database is accessible from Vercel
 - If using private database, consider using Vercel's Postgres
 
-## Setting Up Media Files (Optional)
+## Setting Up Supabase Media Storage
 
-To handle image uploads, configure cloud storage:
+Vercel's local filesystem is temporary. To persist uploaded profile pictures and
+post media, create a public Supabase Storage bucket and S3 credentials under
+**Storage → Settings → S3 Connection**. Add these Vercel environment variables:
 
-### AWS S3
-```bash
-pip install django-storages boto3
-# Set environment variables: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_STORAGE_BUCKET_NAME
+```text
+SUPABASE_PROJECT_REF=your-project-ref
+SUPABASE_S3_BUCKET=vordi-media
+SUPABASE_S3_ACCESS_KEY_ID=your-s3-access-key
+SUPABASE_S3_SECRET_ACCESS_KEY=your-s3-secret-key
 ```
 
-### Cloudinary
-```bash
-pip install cloudinary
-# Set CLOUDINARY_URL environment variable
-```
+Use the exact name of the bucket and keep the S3 credentials private. Redeploy after
+adding the variables. Uploads are limited to 4 MB per file to fit Vercel's request
+size limits.
 
 ## Monitoring
 
